@@ -13,4 +13,4 @@ const querySchema = new mongoose.Schema<queryModel>({
 })
 
 const queryModel = mongoose.model('query', querySchema);
-module.exports = queryModel
+export default queryModel;

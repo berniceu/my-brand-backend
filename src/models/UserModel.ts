@@ -19,4 +19,4 @@ UserSchema.methods.comparePassword = function (password: string) : boolean {
 }
 
 const userModel = mongoose.model('User', UserSchema);
-module.exports = userModel;
+export default userModel
