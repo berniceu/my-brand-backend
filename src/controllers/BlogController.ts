@@ -9,7 +9,7 @@ import fs from 'fs';
 
 dotenv.config();
 
-const newBlog = async(req: Request, res: Response) => {
+const createBlog = async(req: Request, res: Response) => {
     try{
         if(!req.file){
             return res.status(400).json( {error: "No file uploaded"});
@@ -33,3 +33,5 @@ const newBlog = async(req: Request, res: Response) => {
         return res.status(400).json(err)
     }
 }
+
+export default createBlog
