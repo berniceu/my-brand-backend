@@ -4,7 +4,8 @@ import bcrypt from 'bcrypt';
 interface UserModel{
     fullName: string,
     email: string,
-    hash_password: string
+    hash_password: string,
+    
 }
 
 const UserSchema = new mongoose.Schema<UserModel>({
@@ -18,5 +19,5 @@ UserSchema.methods.comparePassword = function (password: string) : boolean {
 
 }
 
-const userModel = mongoose.model('User', UserSchema);
+const userModel = mongoose.model<UserModel>('User', UserSchema);
 export default userModel

@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const createUser = async(req: Request, res: Response) => {
+export const createUser = async(req: Request, res: Response) => {
     try{
 
         
@@ -35,4 +35,16 @@ const createUser = async(req: Request, res: Response) => {
 
 }  
 
-export default createUser
+export const loginUser = async (req: Request, res: Response) => {
+    try{
+        const { email, password} = req.body;
+        const user = await userModel.find({ email});
+        
+
+        
+
+    } catch(err){
+        console.log(err);
+        return res.status(500). json(err)
+    }
+}
