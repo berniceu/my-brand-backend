@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import blogRoute from './routes/BlogRoute';
 import queryRoute from './routes/QueryRoute';
+import userRoute from './routes/userRoute';
 import upload from './cloudinary/multer';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use(upload.single('image'));
 app.use('/blogs', blogRoute);
 app.use('/queries', queryRoute);
+app.use('/users', userRoute);
+
 
 
 
