@@ -1,7 +1,7 @@
 import queryModel from "../models/queryModel";
 import { Request, Response } from "express";
 
-const userQuery = async(req: Request, res: Response) => {
+export const createQuery = async(req: Request, res: Response) => {
     try{
         const {name, email, query} = req.body;
 
@@ -14,4 +14,14 @@ const userQuery = async(req: Request, res: Response) => {
     }
 }
 
-export default userQuery;
+export const getQuery = async(req: Request, res: Response) => {
+    try{
+        const query = await queryModel.find({});
+        res.status(200).json({message: "message received"})
+
+    } catch(err){
+        console.log(err);
+        res.status(500).json({message: "Internal server error"});
+    }
+}
+

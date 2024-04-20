@@ -11,7 +11,7 @@ interface BlogModel{
 const BlogSchema = new mongoose.Schema<BlogModel>({
     blogTitle: {type: String, required: true},
     blog:{type:String, required: true},
-    blogImage: {type:String, required: true},
+    blogImage: {type:String},
     author:{type: String, required: true},
     likes: {type: Number, default: 0},
 }, {timestamps: true});
