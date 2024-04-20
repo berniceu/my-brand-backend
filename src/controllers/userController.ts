@@ -25,7 +25,7 @@ export const createUser = async(req: Request, res: Response) => {
             return res.status(400).json({message: "User already exists"})
         } else{
             const savedUser = await newUser.save();
-            res.status(200).json(savedUser);
+            res.status(200).json({message: "Signed up successfully"});
         }
     } catch(err){
         console.log(err)
@@ -38,8 +38,18 @@ export const createUser = async(req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
     try{
         const { email, password} = req.body;
-        const user = await userModel.find({ email});
+        const user = await userModel.findOne({ email});
         
+        if(!user){
+            return res.status(400).json({message: 'User does not exist'});
+        }
+
+        if (!bcrypt.compareSync(password, user.hash_password)){
+            return res.status(401).json({message: "Incorrect password"});
+        }
+
+        const accessToken = jwt.sign({ email: user.email}, process.env.ACCESS_TOKEN_SECRET as string);
+        res.status(200).json({message: "Logged in successfully"})
 
         
 
