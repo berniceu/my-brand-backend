@@ -7,12 +7,13 @@ import {
     deleteBlog,
     addLike,
     addComment,
-    getComment
+    getComment,
+    upload
 } from '../controllers/BlogController';
 
 const route = express.Router();
 
-route.post('/createBlog', createBlog);
+route.post('/createBlog', upload.single('blogImage'), createBlog);
 route.get('/getBlog/:id', getBlog);
 route.get('/getAllBlogs', getAllBlogs);
 route.put('/updateBlog/:id', updateBlog);

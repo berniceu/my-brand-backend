@@ -2,21 +2,44 @@ import { Request, Response } from 'express';
 import BlogModel from '../models/BlogModel';
 import CommentModel from '../models/CommentModel';
 import dotenv from 'dotenv';
-import uploader from '../cloudinary/cloudinary';
-import upload from '../cloudinary/multer';
+const cloudinary = require('cloudinary').v2;
 import fs from 'fs';
-
+import multer from 'multer';
 
 dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+})
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+})
+
+export const upload = multer( {storage: storage});
+
+
+
 
 // create new blog
 
 export const createBlog = async(req: Request, res: Response) => {
+
     try{
+        console.log(req.file);
+        console.log(req.body);
+
         if(!req.file){
             return res.status(400).json( {error: "No file uploaded"});
         }
-        const result = await uploader(req.file, res);
+        const result = await cloudinary.uploader.upload(req.file.path);
         const { blogTitle, blog, author} = req.body;
         const blogData = new BlogModel({
             blogTitle,
@@ -32,7 +55,7 @@ export const createBlog = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        return res.status(400).json(err)
+        return res.status(500).json(err)
     }
 }
 
