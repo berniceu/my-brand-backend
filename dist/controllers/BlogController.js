@@ -12,20 +12,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getComment = exports.addComment = exports.addLike = exports.deleteBlog = exports.updateBlog = exports.getAllBlogs = exports.getBlog = exports.createBlog = void 0;
+exports.getComment = exports.addComment = exports.addLike = exports.deleteBlog = exports.updateBlog = exports.getAllBlogs = exports.getBlog = exports.createBlog = exports.upload = void 0;
 const BlogModel_1 = __importDefault(require("../models/BlogModel"));
 const CommentModel_1 = __importDefault(require("../models/CommentModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const cloudinary_1 = __importDefault(require("../cloudinary/cloudinary"));
+const cloudinary = require('cloudinary').v2;
 const fs_1 = __importDefault(require("fs"));
+const multer_1 = __importDefault(require("multer"));
+const CommentModel_2 = __importDefault(require("../models/CommentModel"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path_1.default.resolve(__dirname, '../uploads'));
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+exports.upload = (0, multer_1.default)({ storage: storage });
 // create new blog
 const createBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req.file);
+        console.log(req.body);
         if (!req.file) {
             return res.status(400).json({ error: "No file uploaded" });
         }
-        const result = yield (0, cloudinary_1.default)(req.file, res);
+        const result = yield cloudinary.uploader.upload(req.file.path);
         const { blogTitle, blog, author } = req.body;
         const blogData = new BlogModel_1.default({
             blogTitle,
@@ -39,7 +58,7 @@ const createBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (err) {
         console.log(err);
-        return res.status(400).json(err);
+        return res.status(500).json({ message: 'blog not created' });
     }
 });
 exports.createBlog = createBlog;
@@ -52,7 +71,7 @@ const getBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.log(err);
-        return res.status(400).json(err);
+        return res.status(500).json({ message: 'failed to get blog' });
     }
 });
 exports.getBlog = getBlog;
@@ -64,7 +83,7 @@ const getAllBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (err) {
         console.log(err);
-        return res.status(400).json(err);
+        return res.status(500).json({ messsage: 'failed to get blogs' });
     }
 });
 exports.getAllBlogs = getAllBlogs;
@@ -78,7 +97,7 @@ const updateBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (err) {
         console.log(err);
-        return res.status(400).json(err);
+        return res.status(500).json({ message: 'failed to update blog' });
     }
 });
 exports.updateBlog = updateBlog;
@@ -91,7 +110,7 @@ const deleteBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (err) {
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json({ message: 'failed to delete blog' });
     }
 });
 exports.deleteBlog = deleteBlog;
@@ -114,7 +133,7 @@ const addLike = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json({ message: "failed to add like" });
     }
 });
 exports.addLike = addLike;
@@ -134,8 +153,8 @@ exports.addComment = addComment;
 const getComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const comment = yield BlogModel_1.default.findById(id);
-        res.status(200).send(comment);
+        const comments = yield CommentModel_2.default.find({ blogId: id });
+        res.status(200).send(comments);
     }
     catch (err) {
         res.status(500).json({ message: 'failed to get comments' });

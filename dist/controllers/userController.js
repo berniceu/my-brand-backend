@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = exports.createUser = void 0;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -31,22 +32,31 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         else {
             const savedUser = yield newUser.save();
-            res.status(200).json(savedUser);
+            res.status(200).json({ message: "Signed up successfully" });
         }
     }
     catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "failed to sign up" });
     }
 });
 exports.createUser = createUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const user = yield UserModel_1.default.find({ email });
+        const user = yield UserModel_1.default.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'User does not exist' });
+        }
+        if (!bcrypt_1.default.compareSync(password, user.hash_password)) {
+            return res.status(401).json({ message: "Incorrect password" });
+        }
+        const accessToken = jsonwebtoken_1.default.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET);
+        res.status(200).json({ message: "Logged in successfully" });
     }
     catch (err) {
         console.log(err);
-        return res.status(500).json(err);
+        return res.status(500).json({ message: "failed to log in" });
     }
 });
 exports.loginUser = loginUser;
