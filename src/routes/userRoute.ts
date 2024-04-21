@@ -36,6 +36,10 @@ const route = express.Router();
  *     responses:
  *       '200':
  *         description: user added successfully
+ *       '400': 
+ *         description: user already exists
+ *       '500':
+ *         description: failed to sign up
  */
 
 /**
@@ -59,7 +63,14 @@ const route = express.Router();
  *                 format: password
  *     responses:
  *       '200':
- *         description: user logged in successfully.
+ *         description: user logged in successfully 
+ *       '400':
+ *         description: user does not exist
+ *       '401':
+ *         description: incorrect password
+ *       '500':
+ *         description: failed to log in
+ * 
  */
 
 route.post('/signup', createUser);

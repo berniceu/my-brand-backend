@@ -10,7 +10,7 @@ export const createQuery = async(req: Request, res: Response) => {
 
     }catch(err){
         console.log(err);
-        res.status(500).json({message: err});
+        res.status(500).json({message: "failed to send message"});
     }
 }
 
@@ -21,7 +21,7 @@ export const getQuery = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        res.status(500).json({message: "Internal server error"});
+        res.status(500).json({message: "failed to get message"});
     }
 }
 

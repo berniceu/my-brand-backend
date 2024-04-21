@@ -2,7 +2,7 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 
-const router = express.Router();
+const swaggerRouter = express.Router();
 
 const options = {
     definition: {
@@ -13,10 +13,10 @@ const options = {
         }
     },
 
-    apis:['./src/Routes/*.ts'],
+    apis:['./src/routes/*.ts'],
 }
 
 const swaggerSpec = swaggerJSDoc(options);
-router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+swaggerRouter.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
-export default router;
+export default swaggerRouter;

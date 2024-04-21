@@ -28,7 +28,8 @@ export const createUser = async(req: Request, res: Response) => {
             res.status(200).json({message: "Signed up successfully"});
         }
     } catch(err){
-        console.log(err)
+        console.log(err);
+        return res.status(500).json({message: "failed to sign up"})
     }
     
 
@@ -55,6 +56,6 @@ export const loginUser = async (req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        return res.status(500). json(err)
+        return res.status(500). json({message: "failed to log in"})
     }
 }

@@ -6,7 +6,7 @@ const cloudinary = require('cloudinary').v2;
 import fs from 'fs';
 import multer from 'multer';
 import commentModel from '../models/CommentModel';
-const path = require('path');
+import path from 'path';
 
 dotenv.config();
 
@@ -57,7 +57,7 @@ export const createBlog = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        return res.status(500).json(err)
+        return res.status(500).json({message: 'blog not created'})
     }
 }
 
@@ -72,7 +72,7 @@ export const getBlog = async (req: Request, res: Response) => {
 
     } catch(err){
         console.log(err)
-        return res.status(400).json(err)
+        return res.status(500).json({message: 'failed to get blog'})
     }
 }
 
@@ -86,7 +86,7 @@ export const getAllBlogs = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err)
-        return res.status(400).json(err);
+        return res.status(500).json({messsage: 'failed to get blogs'});
     }
 }
 
@@ -101,7 +101,7 @@ export const updateBlog = async(req: Request, res: Response) => {
 
     }catch(err){
         console.log(err);
-        return res.status(400).json(err);
+        return res.status(500).json({message: 'failed to update blog'});
     }
 }
 
@@ -115,7 +115,7 @@ export const deleteBlog = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        res.status(400).json(err);
+        res.status(500).json({message: 'failed to delete blog'});
     }
 }
 
@@ -141,7 +141,7 @@ export const addLike = async(req: Request, res: Response) => {
 
     } catch(err){
         console.log(err);
-        res.status(400).json(err)
+        res.status(500).json({message: "failed to add like"})
     }
 }
 

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import blogRoute from './routes/BlogRoute';
 import queryRoute from './routes/QueryRoute';
 import userRoute from './routes/userRoute';
+import swaggerRouter from './Swagger/swagger';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -21,10 +22,15 @@ app.use(express.json());
 app.use('/blogs', blogRoute);
 app.use('/queries', queryRoute);
 app.use('/users', userRoute);
+app.use(swaggerRouter)
 
 
 
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(' Server running on ', PORT)
+})
+
+server.on('error', (err) => {
+    console.log(err)
 })
