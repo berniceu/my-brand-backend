@@ -18,7 +18,7 @@ route.get('/getBlog/:id', getBlog);
 route.get('/getAllBlogs', getAllBlogs);
 route.put('/updateBlog/:id', updateBlog);
 route.delete('/deleteBlog/:id', deleteBlog);
-route.post('/addLike', addLike);
+route.post('/addLike/:id', addLike);
 route.post('/addComment/:id', addComment);
 route.get('/getComment/:id', getComment)
 

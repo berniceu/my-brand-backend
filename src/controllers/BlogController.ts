@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 const cloudinary = require('cloudinary').v2;
 import fs from 'fs';
 import multer from 'multer';
+import commentModel from '../models/CommentModel';
+const path = require('path');
 
 dotenv.config();
 
@@ -16,7 +18,7 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, path.resolve(__dirname, '../uploads'));
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);
@@ -162,8 +164,8 @@ export const addComment = async(req: Request, res:Response) => {
 export const getComment = async(req: Request, res: Response) => {
     try{
         const { id } = req.params;
-        const comment = await BlogModel.findById(id);
-        res.status(200).send(comment);
+        const comments = await commentModel.find({blogId: id});
+        res.status(200).send(comments);
 
     } catch(err){
         res.status(500).json({message: 'failed to get comments'});
