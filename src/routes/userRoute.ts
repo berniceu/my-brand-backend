@@ -1,22 +1,22 @@
-import express from 'express';
-import { createUser, loginUser } from '../controllers/userController';
+import express from "express";
+import { createUser, loginUser } from "../controllers/userController";
 
 const route = express.Router();
 
 /**
  * @swagger
- * components: 
+ * components:
  *   schemas:
  *     users:
  *       type: object
  *       properties:
  *         name:
  *           type: string
- *           description: name of user
+ *           description: name of the user
  *         email:
  *           type: string
- *           description: email of user
- *         password: 
+ *           description: email of the user
+ *         password:
  *           type: string
  *           description: password
  */
@@ -25,8 +25,8 @@ const route = express.Router();
  * @swagger
  * /signup:
  *   post:
- *     summary: save user to mongodb
- *     description: this api is used to save users to mongodb
+ *     summary: save a user to MongoDB
+ *     description: This API is used to save users to MongoDB
  *     requestBody:
  *       required: true
  *       content:
@@ -34,11 +34,11 @@ const route = express.Router();
  *           schema:
  *             $ref: '#/components/schemas/users'
  *     responses:
- *       '200':
+ *       200:
  *         description: user added successfully
- *       '400': 
- *         description: user already exists
- *       '500':
+ *       400:
+ *         description: ser already exists
+ *       500:
  *         description: failed to sign up
  */
 
@@ -47,7 +47,7 @@ const route = express.Router();
  * /login:
  *   post:
  *     summary: user login
- *     description: this api is used to log users if they exist in mongodb
+ *     description: This API is used to log in users if they exist in
  *     requestBody:
  *       required: true
  *       content:
@@ -62,19 +62,18 @@ const route = express.Router();
  *                 type: string
  *                 format: password
  *     responses:
- *       '200':
- *         description: user logged in successfully 
- *       '400':
+ *       200:
+ *         description: user logged in successfully
+ *       400:
  *         description: user does not exist
- *       '401':
+ *       401:
  *         description: incorrect password
- *       '500':
+ *       500:
  *         description: failed to log in
- * 
  */
 
-route.post('/signup', createUser);
-route.post('/login', loginUser);
+route.post("/signup", createUser);
+route.post("/login", loginUser);
 
-const userRoute = module.exports = route;
+const userRoute = (module.exports = route);
 export default userRoute;

@@ -1,25 +1,23 @@
-import express from 'express';
+import express from "express";
 import {
-    createBlog,
-    getBlog,
-    getAllBlogs,
-    updateBlog,
-    deleteBlog,
-    addLike,
-    addComment,
-    getComment,
-    upload
-} from '../controllers/BlogController';
-
-
+  createBlog,
+  getBlog,
+  getAllBlogs,
+  updateBlog,
+  deleteBlog,
+  addLike,
+  addComment,
+  getComment,
+  upload,
+} from "../controllers/BlogController";
 
 const route = express.Router();
 
 /**
  * @swagger
- * components: 
+ * components:
  *   schemas:
- *     blogs:
+ *     blog:
  *       type: object
  *       properties:
  *         _id:
@@ -31,18 +29,16 @@ const route = express.Router();
  *         blog:
  *           type: string
  *           description: content of the blog
- *         author: 
+ *         author:
  *           type: string
  *           description: author of the blog
  *         blogImage:
  *           type: string
  *           description: image of the blog
  *         likes:
- *           type: number
+ *           type: integer
  *           description: number of likes on the blog
  */
-
-
 
 /**
  * @swagger
@@ -51,42 +47,44 @@ const route = express.Router();
  *     summary: get all blogs from mongodb
  *     description: This api is used to get all blogs from mongodb
  *     responses:
- *       '200':
+ *       200:
  *         description: Get data from mongodb
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/blogs'
- *       '500':
+ *                 $ref: '#/components/schemas/blog'
+ *       500:
  *          description: failed to get blogs
- *             
+ *
  */
 
 /**
  * @swagger
  * /blogs/createBlog:
  *   post:
- *     summary: post blogs to mongodb
- *     description: this api is used to post blogs to mongodb
+ *     summary: create new blog
+ *     description: this api is used to create and post blogs to mongodb
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/blogs'
+ *             $ref: '#/components/schemas/blog'
  *     responses:
- *       '200':
- *         description: blog added successfully.
+ *       200:
+ *         description: blog added successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/blogs'
- * 
- *       '500':
+ *                 $ref: '#/components/schemas/blog'
+ *       400:
+ *         description: No file uploaded
+ *
+ *       500:
  *         description: blog deleted successfully
  */
 
@@ -101,10 +99,10 @@ const route = express.Router();
  *         name: id
  *         required: true
  *         description: ID required
- *         schema: 
+ *         schema:
  *           type: string
  *     responses:
- *       '200':
+ *       200:
  *         description: Get blog from mongodb
  *         content:
  *           application/json:
@@ -112,7 +110,7 @@ const route = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/blogs'
- *       '500':
+ *       500:
  *         description: failed to get blog
  */
 
@@ -127,16 +125,16 @@ const route = express.Router();
  *         name: id
  *         required: true
  *         description: ID required
- *         schema: 
+ *         schema:
  *           type: string
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/blogs'                 
+ *             $ref: '#/components/schemas/blogs'
  *     responses:
- *       '200':
+ *       200:
  *         description: Updated successfully
  *         content:
  *           application/json:
@@ -144,7 +142,7 @@ const route = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/blogs'
- *       '500':
+ *       500:
  *         description: failed to update blog
  */
 
@@ -159,12 +157,12 @@ const route = express.Router();
  *         name: id
  *         required: true
  *         description: ID required
- *         schema: 
+ *         schema:
  *           type: string
  *     responses:
- *       '200':
+ *       200:
  *         description: blog deleted successfully
- *       '500':
+ *       500:
  *         description: failed to delete blog
  */
 
@@ -179,9 +177,9 @@ const route = express.Router();
  *         name: id
  *         required: true
  *         description: ID required
- *         schema: 
+ *         schema:
  *           type: string
- * 
+ *
  *     requestBody:
  *         description: comment data
  *         required: true
@@ -196,12 +194,12 @@ const route = express.Router();
  *                 text:
  *                   type: string
  *                   dexcription: comment
- *               
+ *
  *     responses:
- *       '200':
+ *       200:
  *         description: comment added successfully
- * 
- *       '500':
+ *
+ *       500:
  *         description: failed to comment
  */
 
@@ -216,37 +214,70 @@ const route = express.Router();
  *         name: id
  *         required: true
  *         description: ID required
- *         schema: 
- *           type: string              
+ *         schema:
+ *           type: string
  *     responses:
- *       '200':
- *         description: get comments
+ *       200:
+ *         description: comments retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 name:
- *                   type: string
- *                 text:
- *                   type: string
- *                  
- * 
- *       '500':
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: Commenter's name
+ *                   text:
+ *                     type: string
+ *                     description: Comment text
+ *       500:
  *         description: failed to get comments
  */
 
+/**
+ * @swagger
+ * /blogs/addLike/{id}:
+ *   post:
+ *     summary: Add a like to a blog by ID
+ *     tags:
+ *       - Blogs
+ *     description: This endpoint adds a like to a blog using its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Blog ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content: 
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - action
+ *             properties:
+ *               action:
+ *                 type: string
+ *                 description: Like action
+ *     responses:
+ *       200:
+ *         description: added like successfully
+ *       500:
+ *         description: failed to add like
+ */
 
-route.post('/createBlog', upload.single('blogImage'), createBlog);
-route.get('/getBlog/:id', getBlog);
-route.get('/getAllBlogs', getAllBlogs);
-route.put('/updateBlog/:id', updateBlog);
-route.delete('/deleteBlog/:id', deleteBlog);
-route.post('/addLike/:id', addLike);
-route.post('/addComment/:id', addComment);
-route.get('/getComment/:id', getComment)
+route.post("/createBlog", upload.single("blogImage"), createBlog);
+route.get("/getBlog/:id", getBlog);
+route.get("/getAllBlogs", getAllBlogs);
+route.put("/updateBlog/:id", updateBlog);
+route.delete("/deleteBlog/:id", deleteBlog);
+route.post("/addLike/:id", addLike);
+route.post("/addComment/:id", addComment);
+route.get("/getComment/:id", getComment);
 
-const blogRoute = module.exports = route
+const blogRoute = (module.exports = route);
 export default blogRoute;
-
-

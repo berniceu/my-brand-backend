@@ -5,7 +5,7 @@ const route = express.Router();
 
 /**
  * @swagger
- * components: 
+ * components:
  *   schemas:
  *     queries:
  *       type: object
@@ -19,7 +19,7 @@ const route = express.Router();
  *         email:
  *           type: string
  *           description: content of the blog
- *         query: 
+ *         query:
  *           type: string
  *           description: author of the blog
  */
@@ -31,37 +31,35 @@ const route = express.Router();
  *     summary: get all queries from mongodb
  *     description: This api is used to get all queries from mongodb
  *     responses:
- *       '200':
- *         description: Get data from mongodb
+ *       200:
+ *         description: successfully retrieved data from mongodb
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/queries'
- *       '500':
- *          description: failed to get queries
- *             
+ *       500:
+ *         description: failed to get queries
  */
 
 /**
  * @swagger
  * /blogs/sendquery:
  *   post:
- *     summary: post query to mongodb
+ *     summary: post a query to mongodb
  *     description: This api is used to post a query to mongodb
  *     responses:
- *       '200':
- *         description: send data to mongodb
+ *       200:
+ *         description: message sent
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/blogs'
- *       '500':
- *          description: failed to post query
- *             
+ *                 $ref: '#/components/schemas/queries'
+ *       500:
+ *         description: failed to send message
  */
 
 route.post('/sendquery', createQuery);
