@@ -11,13 +11,18 @@ dotenv.config();
 const app = express();
 const MONGO_URL : any = process.env.MONGO_URL;
 const PORT = process.env.port || 3000;
+const corsOptions = {
+    origin: "*",
+    methods: 'GET, POST, DELETE, PUT',
+    allowedHeaders: "Content-Type"
+}
 
 mongoose.connect(MONGO_URL)
 .then(() => console.log('connected to mongodb'))
 .catch((err) => console.log(err));
 
 // routes
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use('/blogs', blogRoute);
 app.use('/queries', queryRoute);
