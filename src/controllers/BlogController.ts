@@ -16,9 +16,14 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 })
 
+const uploadPath = path.resolve(__dirname, 'uploads/');
+if (!fs.existsSync(uploadPath)){
+    fs.mkdirSync(uploadPath)
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.resolve(__dirname, '../uploads'));
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);
@@ -26,7 +31,6 @@ const storage = multer.diskStorage({
 })
 
 export const upload = multer( {storage: storage});
-
 
 
 
@@ -42,6 +46,7 @@ export const createBlog = async(req: Request, res: Response) => {
             return res.status(400).json( {error: "No file uploaded"});
         }
         const result = await cloudinary.uploader.upload(req.file.path);
+
         const { blogTitle, blog, author} = req.body;
         const blogData = new BlogModel({
             blogTitle,

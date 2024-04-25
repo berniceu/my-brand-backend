@@ -27,9 +27,13 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
 });
+const uploadPath = path_1.default.resolve(__dirname, 'uploads/');
+if (!fs_1.default.existsSync(uploadPath)) {
+    fs_1.default.mkdirSync(uploadPath);
+}
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path_1.default.resolve(__dirname, '../uploads'));
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);

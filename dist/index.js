@@ -18,7 +18,6 @@ const PORT = process.env.port || 3000;
 const corsOptions = {
     origin: "*",
     methods: 'GET, POST, DELETE, PUT',
-    allowedHeaders: "Content-Type"
 };
 mongoose_1.default.connect(MONGO_URL)
     .then(() => console.log('connected to mongodb'))

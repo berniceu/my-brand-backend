@@ -7,6 +7,7 @@ import swaggerRouter from './Swagger/swagger';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
+
 dotenv.config();
 const app = express();
 const MONGO_URL : any = process.env.MONGO_URL;
@@ -14,7 +15,7 @@ const PORT = process.env.port || 3000;
 const corsOptions = {
     origin: "*",
     methods: 'GET, POST, DELETE, PUT',
-    allowedHeaders: "Content-Type"
+
 }
 
 mongoose.connect(MONGO_URL)
