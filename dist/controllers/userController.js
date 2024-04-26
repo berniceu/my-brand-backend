@@ -52,7 +52,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(401).json({ message: "Incorrect password" });
         }
         const accessToken = jsonwebtoken_1.default.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET);
-        res.status(200).json({ message: "Logged in successfully" });
+        res.status(200).json({ message: "Logged in successfully", role: user.role });
     }
     catch (err) {
         console.log(err);
@@ -62,6 +62,11 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.loginUser = loginUser;
 const createAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const existingAdmin = yield UserModel_1.default.findOne({ role: 'admin' });
+        if (existingAdmin) {
+            console.log('User already exists');
+            return;
+        }
         const adminUser = new UserModel_1.default({
             fullName: 'Bernice Uwituze',
             email: 'berniceuwituze@gmail.com',
@@ -69,12 +74,10 @@ const createAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
             role: 'admin'
         });
         yield adminUser.save();
-        process.exit(0);
+        console.log('Admin user created successfully');
     }
     catch (err) {
         console.log(err);
-        process.exit(1);
     }
 });
 exports.createAdmin = createAdmin;
-(0, exports.createAdmin)();

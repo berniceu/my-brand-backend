@@ -50,7 +50,7 @@ export const loginUser = async (req: Request, res: Response) => {
         }
 
         const accessToken = jwt.sign({ email: user.email}, process.env.ACCESS_TOKEN_SECRET as string);
-        res.status(200).json({message: "Logged in successfully"})
+        res.status(200).json({message: "Logged in successfully", role:user.role})
 
         
 
@@ -62,6 +62,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const createAdmin = async() => {
     try{
+
+        const existingAdmin = await userModel.findOne({ role: 'admin'});
+
+        if(existingAdmin){
+            console.log('User already exists');
+            return;
+        }
         const adminUser = new userModel({
             fullName: 'Bernice Uwituze',
             email: 'berniceuwituze@gmail.com',
@@ -71,12 +78,11 @@ export const createAdmin = async() => {
         });
 
         await adminUser.save();
-        process.exit(0)
+        console.log('Admin user created successfully');
     }
     catch(err){
         console.log(err);
-        process.exit(1)
+        
     }
 }
 
-createAdmin();

@@ -9,6 +9,7 @@ const BlogRoute_1 = __importDefault(require("./routes/BlogRoute"));
 const QueryRoute_1 = __importDefault(require("./routes/QueryRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const subcribeRoute_1 = __importDefault(require("./routes/subcribeRoute"));
+const userController_1 = require("./controllers/userController");
 const swagger_1 = __importDefault(require("./Swagger/swagger"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
@@ -26,6 +27,7 @@ mongoose_1.default.connect(MONGO_URL)
 // routes
 app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
+(0, userController_1.createAdmin)();
 app.use('/blogs', BlogRoute_1.default);
 app.use('/queries', QueryRoute_1.default);
 app.use('/users', userRoute_1.default);

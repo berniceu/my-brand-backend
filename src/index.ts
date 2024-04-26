@@ -4,6 +4,7 @@ import blogRoute from './routes/BlogRoute';
 import queryRoute from './routes/QueryRoute';
 import userRoute from './routes/userRoute';
 import subscribeRoute from './routes/subcribeRoute';
+import { createAdmin } from './controllers/userController';
 import swaggerRouter from './Swagger/swagger';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -26,6 +27,9 @@ mongoose.connect(MONGO_URL)
 // routes
 app.use(cors(corsOptions))
 app.use(express.json());
+
+createAdmin();
+
 app.use('/blogs', blogRoute);
 app.use('/queries', queryRoute);
 app.use('/users', userRoute);
