@@ -59,3 +59,24 @@ export const loginUser = async (req: Request, res: Response) => {
         return res.status(500). json({message: "failed to log in"})
     }
 }
+
+export const createAdmin = async() => {
+    try{
+        const adminUser = new userModel({
+            fullName: 'Bernice Uwituze',
+            email: 'berniceuwituze@gmail.com',
+            hash_password: bcrypt.hashSync(process.env.adminpassword as string, 10),
+            role: 'admin'
+
+        });
+
+        await adminUser.save();
+        process.exit(0)
+    }
+    catch(err){
+        console.log(err);
+        process.exit(1)
+    }
+}
+
+createAdmin();

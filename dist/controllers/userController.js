@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.createUser = void 0;
+exports.createAdmin = exports.loginUser = exports.createUser = void 0;
 const UserModel_1 = __importDefault(require("../models/UserModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -60,3 +60,21 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUser = loginUser;
+const createAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const adminUser = new UserModel_1.default({
+            fullName: 'Bernice Uwituze',
+            email: 'berniceuwituze@gmail.com',
+            hash_password: bcrypt_1.default.hashSync(process.env.adminpassword, 10),
+            role: 'admin'
+        });
+        yield adminUser.save();
+        process.exit(0);
+    }
+    catch (err) {
+        console.log(err);
+        process.exit(1);
+    }
+});
+exports.createAdmin = createAdmin;
+(0, exports.createAdmin)();

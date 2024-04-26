@@ -8,7 +8,8 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserSchema = new mongoose_1.default.Schema({
     fullName: { type: String, required: true },
     email: { type: String, required: true },
-    hash_password: { type: String, required: true }
+    hash_password: { type: String, required: true },
+    role: { type: String, default: 'user' }
 });
 UserSchema.methods.comparePassword = function (password) {
     return bcrypt_1.default.compareSync(password, this.hash_password);
