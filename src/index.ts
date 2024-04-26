@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import blogRoute from './routes/BlogRoute';
 import queryRoute from './routes/QueryRoute';
 import userRoute from './routes/userRoute';
+import subscribeRoute from './routes/subcribeRoute';
 import swaggerRouter from './Swagger/swagger';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/blogs', blogRoute);
 app.use('/queries', queryRoute);
 app.use('/users', userRoute);
+app.use('/subscribe', subscribeRoute);
 app.use(swaggerRouter)
 
 
