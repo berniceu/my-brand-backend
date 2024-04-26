@@ -22,8 +22,15 @@ const transporter = nodemailer.createTransport({
     try{
         const { email } = req.body;
 
+        if(!email){
+            return res.status(400).json({ message: "Email is required"});
+
+        }
+
+        const newSubscriber = await SubscribeModel.create({ email});
+
         await transporter.sendMail({
-            from: "berniceuwituze@gmail.com",
+            from: process.env.user,
             to: email,
             subject: "Welcome to my Blog newsletter",
             html:`<p>Thank you for subscribing to my newsletter, you will be alerted when new blogs are posted!!

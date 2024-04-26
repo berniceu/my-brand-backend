@@ -29,7 +29,7 @@ exports.createQuery = createQuery;
 const getQuery = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const query = yield queryModel_1.default.find({});
-        res.status(200).json({ message: "message received" });
+        res.status(200).json(query);
     }
     catch (err) {
         console.log(err);

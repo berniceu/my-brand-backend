@@ -1,12 +1,12 @@
 
 import mongoose from "mongoose";
 
-interface SubscribeModel{
-    email: String
+interface Subscribe{
+    email: string
 }
 
-const subscribeSchema = new mongoose.Schema<SubscribeModel>({
-    email: {type: String}
+const subscribeSchema = new mongoose.Schema<Subscribe>({
+    email: {type: String, required: true}
 })
 
 const SubscribeModel = mongoose.model('Subscriber', subscribeSchema);

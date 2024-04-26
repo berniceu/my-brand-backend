@@ -8,6 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const BlogRoute_1 = __importDefault(require("./routes/BlogRoute"));
 const QueryRoute_1 = __importDefault(require("./routes/QueryRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const subcribeRoute_1 = __importDefault(require("./routes/subcribeRoute"));
 const swagger_1 = __importDefault(require("./Swagger/swagger"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
@@ -28,6 +29,7 @@ app.use(express_1.default.json());
 app.use('/blogs', BlogRoute_1.default);
 app.use('/queries', QueryRoute_1.default);
 app.use('/users', userRoute_1.default);
+app.use('/subscribe', subcribeRoute_1.default);
 app.use(swagger_1.default);
 const server = app.listen(PORT, () => {
     console.log(' Server running on ', PORT);
