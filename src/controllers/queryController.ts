@@ -17,7 +17,7 @@ export const createQuery = async(req: Request, res: Response) => {
 export const getQuery = async(req: Request, res: Response) => {
     try{
         const query = await queryModel.find({});
-        res.status(200).json({message: "message received"})
+        res.status(200).json(query);
 
     } catch(err){
         console.log(err);
