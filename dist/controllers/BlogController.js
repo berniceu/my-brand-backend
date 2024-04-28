@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getComment = exports.addComment = exports.addLike = exports.deleteBlog = exports.updateBlog = exports.getAllBlogs = exports.getBlog = exports.createBlog = exports.upload = void 0;
+exports.deleteComment = exports.getComment = exports.addComment = exports.addLike = exports.deleteBlog = exports.updateBlog = exports.getAllBlogs = exports.getBlog = exports.createBlog = exports.upload = void 0;
 const BlogModel_1 = __importDefault(require("../models/BlogModel"));
 const CommentModel_1 = __importDefault(require("../models/CommentModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -165,3 +165,15 @@ const getComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getComment = getComment;
+// delete comment
+const deleteComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const comment = yield CommentModel_2.default.findByIdAndDelete(id);
+        res.status(200).send({ message: 'Comment deleted successfully' });
+    }
+    catch (err) {
+        res.status(500).json({ message: 'failed to delete comment' });
+    }
+});
+exports.deleteComment = deleteComment;

@@ -178,3 +178,14 @@ export const getComment = async(req: Request, res: Response) => {
 }
 
 
+// delete comment
+export const deleteComment = async(req: Request, res:Response) => {
+    try{
+        const{ id } = req.params;
+        const comment = await commentModel.findByIdAndDelete(id);
+        res.status(200).send({message: 'Comment deleted successfully'});
+    } catch(err){
+        res.status(500).json({message: 'failed to delete comment'})
+    }
+}
+

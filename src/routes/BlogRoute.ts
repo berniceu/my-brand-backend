@@ -9,6 +9,7 @@ import {
   addComment,
   getComment,
   upload,
+  deleteComment
 } from "../controllers/BlogController";
 
 const route = express.Router();
@@ -278,6 +279,7 @@ route.delete("/deleteBlog/:id", deleteBlog);
 route.post("/addLike/:id", addLike);
 route.post("/addComment/:id", addComment);
 route.get("/getComment/:id", getComment);
+route.delete('/deleteComment/:id', deleteComment)
 
 const blogRoute = (module.exports = route);
 export default blogRoute;

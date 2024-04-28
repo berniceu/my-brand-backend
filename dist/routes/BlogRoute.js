@@ -262,5 +262,6 @@ route.delete("/deleteBlog/:id", BlogController_1.deleteBlog);
 route.post("/addLike/:id", BlogController_1.addLike);
 route.post("/addComment/:id", BlogController_1.addComment);
 route.get("/getComment/:id", BlogController_1.getComment);
+route.delete('/deleteComment/:id', BlogController_1.deleteComment);
 const blogRoute = (module.exports = route);
 exports.default = blogRoute;
