@@ -97,18 +97,27 @@ export const getAllBlogs = async(req: Request, res: Response) => {
 
 // update blog by id
 
-export const updateBlog = async(req: Request, res: Response) => {
-    try{
-        const { id } = req.params;
-        const blog = await BlogModel.findByIdAndUpdate(id);
-        const updatedBlog = await BlogModel.findById(id);
-        res.status(200).json(updatedBlog);
-
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({message: 'failed to update blog'});
+export const updateBlog = async (req: Request, res: Response) => {
+    try {
+      const id = req.params.id;
+      const blogExist = await BlogModel.findOne({ _id: id });
+      if (!blogExist) {
+        return res.status(404).json({ message: "Blog Not found" });
+      }
+      let updateData = req.body;
+  
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file, res);
+        updateData.blogImage = result.secure_url;
+      }
+      const updateBlog = await BlogModel.findByIdAndUpdate(id, updateData, {
+        new: true,
+      });
+      res.status(201).json(updateBlog);
+    } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
     }
-}
+  };
 
 // delete blog by id
 

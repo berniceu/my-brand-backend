@@ -94,14 +94,23 @@ exports.getAllBlogs = getAllBlogs;
 // update blog by id
 const updateBlog = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const blog = yield BlogModel_1.default.findByIdAndUpdate(id);
-        const updatedBlog = yield BlogModel_1.default.findById(id);
-        res.status(200).json(updatedBlog);
+        const id = req.params.id;
+        const blogExist = yield BlogModel_1.default.findOne({ _id: id });
+        if (!blogExist) {
+            return res.status(404).json({ message: "Blog Not found" });
+        }
+        let updateData = req.body;
+        if (req.file) {
+            const result = yield cloudinary.uploader.upload(req.file, res);
+            updateData.blogImage = result.secure_url;
+        }
+        const updateBlog = yield BlogModel_1.default.findByIdAndUpdate(id, updateData, {
+            new: true,
+        });
+        res.status(201).json(updateBlog);
     }
-    catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: 'failed to update blog' });
+    catch (error) {
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 exports.updateBlog = updateBlog;
